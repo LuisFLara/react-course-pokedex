@@ -1,17 +1,21 @@
 import React from 'react';
-import get from 'lodash';
+import { get, forEach } from 'lodash';
 
 const renderPokemonSprites = (urls) => {
-  debugger;
-  urls.forEach(element => {
-    return <img src={element} alt=""/>
+  if(!urls) {
+    return
+  }
+  let collection = [];
+  forEach(urls, (element) => {
+    collection.push(<img src={element} alt=""/>);
   });
+  return collection;
 }
 
 const SelectedPokemonImage = (pokemonImagesUrls) => {
   return (
     <div>
-      {pokemonImagesUrls ? renderPokemonSprites(get(pokemonImagesUrls, 'sprites')) : ''}
+      {renderPokemonSprites(get(pokemonImagesUrls, 'pokemonImagesUrls.selectedPokemon.sprites', ''))}
     </div>
   );
 }
