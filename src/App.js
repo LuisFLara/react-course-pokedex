@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PokeApi from './services/pokemon';
+import PokeForm from './PokeForm';
+import SelectedPokemonContainer from './SelectedPokemonContainer';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedPokemon: {}
+    };
+    this.searchPokemon = this.searchPokemon.bind(this);
+
+  }
+
+  searchPokemon(pokemon){
+    PokeApi.pokemon(pokemon).then((response) => {
+      this.setState({ selectedPokemon: response.data });
+    }).catch((error) => {
+      alert("pokemon no encontrado");
+      this.setState({ selectedPokemon: {} });
+    });
+  }
+  render() {
+    return (
+      <div className="App">
+        <h1>Poke app</h1>
+        <PokeForm searchPokemon={this.searchPokemon}/>
+        <SelectedPokemonContainer selectedPokemon={this.state.selectedPokemon}/>
+      </div>
+    );
+  }
 }
 
 export default App;
